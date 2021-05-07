@@ -1,45 +1,39 @@
-var __importDefault =
-  (this && this.__importDefault) ||
-  function(mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
-Object.defineProperty(exports, '__esModule', { value: true });
-const graphql_1 = require('graphql');
-const utils_1 = require('./utils');
-const fetch_price_1 = __importDefault(require('./helper/fetch-price'));
-const CalculatePriceObjectType = new graphql_1.GraphQLObjectType({
+const graphql = require('graphql');
+const utils = require('./utils');
+const fetch_price = require('../helpers/fetchPrice');
+const CalculatePriceObjectType = new graphql.GraphQLObjectType({
   name: 'CalculatePriceObjectType',
   fields: {
-    exchangeType: { type: graphql_1.GraphQLString },
-    margin: { type: graphql_1.GraphQLInt },
-    exchangeRate: { type: graphql_1.GraphQLFloat },
-    calculatedPrice: {
-      type: graphql_1.GraphQLString,
+    type: { type: graphql.GraphQLString },
+    margin: { type: graphql.GraphQLInt },
+    exchangeRate: { type: graphql.GraphQLFloat },
+    price: {
+      type: graphql.GraphQLString,
       resolve(parent, _args) {
         return parent;
       },
     },
   },
 });
-const RootQuery = new graphql_1.GraphQLObjectType({
+const RootQuery = new graphql.GraphQLObjectType({
   name: 'RootQuery',
   fields: {
     calculatePrice: {
       description: `THIS FIELD DOES THE ACTUAL CALCULATION BASED ON ARGS`,
       type: CalculatePriceObjectType,
       args: {
-        exchangeType: { type: graphql_1.GraphQLString },
-        margin: { type: graphql_1.GraphQLFloat },
-        exchangeRate: { type: graphql_1.GraphQLInt },
+        type: { type: graphql.GraphQLString },
+        margin: { type: graphql.GraphQLFloat },
+        exchangeRate: { type: graphql.GraphQLInt },
       },
       async resolve(_parent, args) {
-        const { error, value } = utils_1.doValidation(Object.assign({}, args));
+        const { error, value } = utils.doValidation(Object.assign({}, args));
         if (error) {
           return error;
         }
-        const currentPrice = await fetch_price_1.default();
+        const currentPrice = await fetch_price();
         const computedMargin =
-          value.exchangeType === 'BUY'
+          value.type === 'BUY'
             ? currentPrice + currentPrice * (value.margin / 100)
             : currentPrice - currentPrice * (value.margin / 100);
         let d = `NGN ${computedMargin * value.exchangeRate}`;
@@ -48,6 +42,6 @@ const RootQuery = new graphql_1.GraphQLObjectType({
     },
   },
 });
-exports.default = new graphql_1.GraphQLSchema({
+module.exports = new graphql.GraphQLSchema({
   query: RootQuery,
 });
