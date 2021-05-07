@@ -1,5 +1,6 @@
 const graphql = require('graphql');
 const utils = require('./utils');
+
 const fetch_price = require('../helpers/fetchPrice');
 const CalculatePriceObjectType = new graphql.GraphQLObjectType({
   name: 'CalculatePriceObjectType',
@@ -27,7 +28,7 @@ const RootQuery = new graphql.GraphQLObjectType({
         exchangeRate: { type: graphql.GraphQLInt },
       },
       async resolve(_parent, args) {
-        const { error, value } = utils.doValidation(Object.assign({}, args));
+        const { error, value } = utils(Object.assign({}, args));
         if (error) {
           return error;
         }
