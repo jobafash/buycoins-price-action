@@ -1,6 +1,7 @@
 # Buycoins-PA
 
 This is a solution to the Buycoins Software Engineer Challenge
+`https://buycoins-pa.herokuapp.com/graphiql`
 
 ## Getting Started
 
