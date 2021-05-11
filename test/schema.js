@@ -7,7 +7,7 @@ const request = require("supertest")(app);
 describe('On passing the right input formats to buy', () => {
   it('should return the computed result',  (done) => {
     request
-    .post("/graphql")
+    .post("/graphiql")
     .send({
       query:
         '{calculatePrice(type: "buy", margin: 0.2, exchangeRate: 472) { price } }'
@@ -24,7 +24,7 @@ describe('On passing the right input formats to buy', () => {
 describe('On passing the right input formats to sell', () => {
   it('should return the computed result',  (done) => {
      request
-      .post("/graphql")
+      .post("/graphiql")
       .send({
         query:
           '{calculatePrice(type: "sell", margin: 0.2, exchangeRate: 485) { price } }'
@@ -42,7 +42,7 @@ describe('On passing the right input formats to sell', () => {
 describe('On passing wrong input formats', () => {
   it('should return null',  (done) => {
      request
-      .post("/graphql")
+      .post("/graphiql")
       .send({
         query:
           '{calculatePrice(type: "buys", margin: 0.2, exchangeRate: 502) { price } }'

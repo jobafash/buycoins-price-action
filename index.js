@@ -1,6 +1,6 @@
 const express = require('express');
 const express_graphql = require('express-graphql').graphqlHTTP;
-const schema = require('./dist/schema');
+const schema = require('./src/schema');
 const app = express();
 require('dotenv').config();
 
@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-  '/graphql', (req, res, next) => {
+  '/graphiql', (req, res, next) => {
     express_graphql({ schema: schema, graphiql: true })(req, res, next);
   }
 );
